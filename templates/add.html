@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+   
+    body { 
+        background: linear-gradient(135deg, #00c6ff, #0072ff); 
+        min-height: 100vh; 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        margin: 0; 
+    }
+    
+   
+    .form-card {
+        background: white;
+        width: 100%;
+        max-width: 500px;
+        padding: 18px;
+        border-radius: 10px;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+    }
+    
+    h2 { text-align: center; color: #007bff; margin-bottom: 30px; letter-spacing: 1px; }
+    
+    
+    .input-group { margin-bottom: 20px; }
+    
+    label { 
+        display: block; 
+        font-size: 11px; 
+        color: #007bff; 
+        font-weight: bold; 
+        margin-bottom: 5px; 
+        text-transform: uppercase;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px 0;
+        border: none;
+        border-bottom: 1px solid #ddd;
+        outline: none;
+        font-size: 20px;
+        color: #333;
+        transition: 0.3s;
+    }
+    input:focus { border-bottom: 2px solid #00c6ff; }
+
+    
+    .btn-save {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(to right, #00c6ff, #0072ff);
+        border: none;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 20px;
+        box-shadow: 0 5px 15px rgba(0, 114, 255, 0.3);
+    }
+    .btn-save:hover { opacity: 0.9; }
+
+    .footer { text-align: center; font-size: 12px; color: #aaa; margin-top: 25px; }
+</style>
+
+<div class="form-card">
+    <h2>{{ 'Edit Student' if student else 'Student Entry' }}</h2>
+    
+    <form method="POST" action="{{ url_for('edit_student', student_id=student['id']) if student else url_for('index') }}">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div style="margin-bottom:12px;padding:8px;background:#ffe6e6;color:#900;border-radius:4px;border:1px solid #f5c2c2;">
+                    {% for m in messages %}
+                        <div>{{ m }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <div class="input-group">
+            <label>ID Number</label>
+            <input id="idnoInput" type="text" name="idno" value="{{ student['idno'] if student else '' }}" required inputmode="numeric" pattern="\d+" min="0" step="1">
+            <div id="idnoError" style="color:#b00020;font-size:13px;margin-top:6px;display:none;">Your ID No should be an integer (digits only).</div>
+        </div>
+
+        <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" name="name" value="{{ student['name'] if student else '' }}" required>
+        </div>
+
+        <div class="input-group">
+            <label>Course</label>
+                <select name="course" id="courseSelect" required style="width:100%;padding:8px;border:none;border-bottom:1px solid #ddd;background:transparent;font-size:15px;">
+                    <option value="" disabled {{ 'selected' if not student }}>Select course</option>
+                    <option value="BS Computer Science" >BS Computer Science</option>
+                    <option value="BS Information Technology" >BS Information Technology</option>
+                    <option value="BS Office Administration" >BS Office Administration</option>
+                    <option value="BS Computer Engineering" >BS Computer Engineering</option>
+                    <option value="BS Hotel Management" >BS Hotel Management</option>
+                    <option value="BS Nursing" >BS Nursing</option>
+                    <option value="BS Accountancy" >BS Accountancy</option>
+                     
+                
+                </select>
+                 </div>
+
+        <div class="input-group">
+            <label>Level</label>
+            <div style="display:flex;gap:10px;align-items:center;">
+                <select name="level" id="levelSelect" required style="width:100%;padding:8px;border:none;border-bottom:1px solid #ddd;background:transparent;font-size:15px;">
+                    <option value="" disabled {% if not student %}selected{% endif %}>Select level</option>
+                    <option value= 1>1st Year</option>
+                    <option value= 2>2nd Year</option>
+                    <option value= 3>3rd Year</option>
+                    <option value= 4>4th Year</option>
+                    <option value= 5>5th Year</option>
+                    <option value= 6>6th Year</option>
+                </select>
+            </div>
+        </div>
+
+        <button id="saveBtn" type="submit" class="btn-save">SAVE</button>
+    </form>
+    
+    <div class="footer">
+        &copy; Erica Gin Echavez, copyright 2025
+    </div>
+</div>
+{% endblock %}
+
+<script>
+    
+    (function(){
+        var courseSelect = document.getElementById('courseSelect');
+        var courseOther = document.getElementById('courseOther');
+        courseSelect && courseSelect.addEventListener('change', function(e){
+            if(this.value === 'Other') {
+                courseOther.style.display = 'block';
+                courseOther.required = true;
+            } else {
+                courseOther.style.display = 'none';
+                courseOther.required = false;
+                courseOther.value = '';
+            }
+        });
+
+        
+        var idnoInput = document.getElementById('idnoInput');
+        var idnoError = document.getElementById('idnoError');
+        var saveBtn = document.getElementById('saveBtn');
+
+        function validateIdno() {
+            if(!idnoInput) return true;
+            var v = idnoInput.value.trim();
+            var ok = /^\d+$/.test(v);
+            if(!ok) {
+                idnoError.style.display = 'block';
+                if(saveBtn) saveBtn.disabled = true;
+            } else {
+                idnoError.style.display = 'none';
+                if(saveBtn) saveBtn.disabled = false;
+            }
+            return ok;
+        }
+
+        if(idnoInput) {
+            idnoInput.addEventListener('input', validateIdno);
+            validateIdno();
+        }
+
+       
+        var form = document.querySelector('form');
+        if(form) {
+            form.addEventListener('submit', function(e){
+                if(!validateIdno()) {
+                    e.preventDefault();
+                    idnoInput.focus();
+                }
+            });
+        }
+    })();
+</script>
+
+<style>
+    
+    @media (max-width: 480px) {
+        .form-card { max-width: 360px; padding: 18px; }
+        h2 { font-size: 18px; }
+    }
+</style>
+{% if student and (student['course'] not in ['BSCS','BSIT','BSCS-AI','BSCpE','BSBA']) %}
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    var co = document.getElementById('courseOther');
+    if(co){ co.style.display='block'; co.required = true; }
+});
+</script>
+{% endif %}

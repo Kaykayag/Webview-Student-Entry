@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width:900px;margin:40px auto;padding:20px;">
+    <h2 style="text-align:center;color:#0072ff;margin-bottom:20px;">Student List</h2>
+
+    {% if students|length == 0 %}
+        <div style="text-align:center;color:#666;padding:30px;border:1px dashed #ddd;">No students found.</div>
+    {% else %}
+    <div class="table-wrapper" style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
+    <table style="width:100%;border-collapse:collapse;min-width:640px;">
+        <thead>
+            <tr style="background:#f5f8ff;color:#333;text-align:left;">
+                <th style="padding:8px;border:1px solid #eee;">ID</th>
+                <th style="padding:8px;border:1px solid #eee;">ID No</th>
+                <th style="padding:8px;border:1px solid #eee;">Name</th>
+                <th style="padding:8px;border:1px solid #eee;">Course</th>
+                <th style="padding:8px;border:1px solid #eee;">Level</th>
+                <th style="padding:8px;border:1px solid #eee;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in students %}
+            <tr>
+                <td style="padding:8px;border:1px solid #eee;">{{ s['id'] }}</td>
+                <td style="padding:8px;border:1px solid #eee;">{{ s['idno'] }}</td>
+                <td style="padding:8px;border:1px solid #eee;">{{ s['name'] }}</td>
+                <td style="padding:8px;border:1px solid #eee;">{{ s['course'] }}</td>
+                <td style="padding:8px;border:1px solid #eee;">{{ s['level'] }}</td>
+                <td style="padding:8px;border:1px solid #eee;white-space:nowrap;">
+                    <a href="{{ url_for('edit_student', student_id=s['id']) }}" class="btn-edit">Edit</a>
+                    <form method="POST" action="{{ url_for('delete_student', student_id=s['id']) }}" style="display:inline;margin-left:8px;" onsubmit="return confirm('Delete this student?');">
+                        <button type="submit" class="btn-delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% endif %}
+
+    <div style="margin-top:20px;text-align:center;">
+        <a href="/" style="display:inline-block;padding:10px 18px;background:#0072ff;color:#fff;border-radius:4px;text-decoration:none;">Add New Student</a>
+    </div>
+</div>
+{% endblock %}
+
+<style>
+
+.table-wrapper { -webkit-overflow-scrolling: touch; }
+.btn-edit, .btn-delete {
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:4px;
+    text-decoration:none;
+    color:#fff;
+    font-size:14px;
+    vertical-align:middle;
+}
+.btn-edit { background:#0072ff; }
+.btn-delete { background:#e74c3c; border:none; cursor:pointer; }
+@media (max-width:600px) {
+    table { min-width:600px; }
+    .btn-edit, .btn-delete { padding:5px 8px; font-size:13px; }
+}
+</style>
