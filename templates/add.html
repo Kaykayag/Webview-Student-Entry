@@ -4,33 +4,65 @@
 <style>
    
     body { 
-        background: linear-gradient(135deg, #00c6ff, #0072ff); 
+        background: linear-gradient(90deg, #a7e0f1, #0072ff, #9bdaee ); 
         min-height: 100vh; 
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         display: flex; 
         justify-content: center; 
         align-items: center; 
         margin: 0; 
+        position: relative;
     }
     
    
     .form-card {
         background: white;
-        width: 100%;
-        max-width: 500px;
+        width: 80%;
+        max-width: 400px;
         padding: 18px;
-        border-radius: 10px;
+        border-radius: 20px;
+        border: 3px solid rgb(54, 1, 212);
         box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+        margin-top: 40px;
+    }
+    .btn-back {
+        position:fixed;
+        top: 25px;
+        left: 25px;
+        text-decoration: none;
+        color: white; 
+        font-weight: bold;
+        font-size: 16px;
+        padding: 10px 20px;
+        border: 2px solid white;
+        border-radius: 30px;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .btn-back:hover {
+        background: white;
+        color: #0072ff;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
     
-    h2 { text-align: center; color: #007bff; margin-bottom: 30px; letter-spacing: 1px; }
+    h2 { text-align:
+        center; color: #007bff; 
+        margin-bottom: 80px;
+        margin-top: 20px;
+        letter-spacing: 1px;
+        font-weight: bold;
+        
+        }
     
     
     .input-group { margin-bottom: 20px; }
     
     label { 
         display: block; 
-        font-size: 11px; 
+        font-size: 12px; 
         color: #007bff; 
         font-weight: bold; 
         margin-bottom: 5px; 
@@ -68,6 +100,10 @@
     .footer { text-align: center; font-size: 12px; color: #aaa; margin-top: 25px; }
 </style>
 
+<a href="{{ url_for('view_list') }}" class="btn-back">
+    &#8592; View Record
+</a>
+
 <div class="form-card">
     <h2>{{ 'Edit Student' if student else 'Student Entry' }}</h2>
     
@@ -103,6 +139,10 @@
                     <option value="BS Hotel Management" >BS Hotel Management</option>
                     <option value="BS Nursing" >BS Nursing</option>
                     <option value="BS Accountancy" >BS Accountancy</option>
+                    <option value="BS Medtech">BS Medtech</option>
+                    <option value="BArch">Bachelor of Architecture</option>
+                    
+
                      
                 
                 </select>
@@ -118,7 +158,7 @@
                     <option value= 3>3rd Year</option>
                     <option value= 4>4th Year</option>
                     <option value= 5>5th Year</option>
-                    <option value= 6>6th Year</option>
+                    
                 </select>
             </div>
         </div>

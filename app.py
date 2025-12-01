@@ -162,4 +162,4 @@ def delete_student(student_id):
 
 if __name__ == "__main__":
     
-    app.run(debug=True, host='10.164.182.1', port=5000)
+    app.run(debug=True, host='192.168.161.60', port=5000)
