@@ -119,13 +119,18 @@
         {% endwith %}
         <div class="input-group">
             <label>ID Number</label>
-            <input id="idnoInput" type="text" name="idno" value="{{ student['idno'] if student else '' }}" required inputmode="numeric" pattern="\d+" min="0" step="1">
-            <div id="idnoError" style="color:#b00020;font-size:13px;margin-top:6px;display:none;">Your ID No should be an integer (digits only).</div>
+            <input id="idnoInput" type="text" name="idno" value="{{ student['idno'] if student else '' }}" required inputmode="numeric" pattern="\d+" maxlength="10">
+            <div id="idnoError" style="color:#b00020;font-size:13px;margin-top:6px;display:none;">Your ID No should be digits only (max 10 characters).</div>
         </div>
 
         <div class="input-group">
-            <label>Full Name</label>
-            <input type="text" name="name" value="{{ student['name'] if student else '' }}" required>
+            <label>First Name</label>
+            <input type="text" id= "firstName" name="firstname" value="{{ student['firstname'] if student else '' }}" required>
+        </div>
+
+        <div class="input-group">
+            <label>Last Name</label>
+            <input type="text" id="lastName" name="lastname" value="{{ student['lastname'] if student else '' }}" required>
         </div>
 
         <div class="input-group">
